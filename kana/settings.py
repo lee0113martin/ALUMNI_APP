@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,12 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zxa1(*x0(iw2hih7l85g7%%3kw!$1xgsr&=j7@gu@c^!4r48zw'
-
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', default='qd#3^56(!u=x)(-)&ij8f3x$&iuvzan%#6@ge)ssbqq_87ahoxifp')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+DEBUG = int(os.environ.get("DEBUG", default=1))
 ALLOWED_HOSTS = ['*']
 
 
@@ -77,35 +76,16 @@ WSGI_APPLICATION = 'kana.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-#  1.  THIS IS THE DEFAULT SQLITE DATABASE THAT IS SHIPPED WITH DJANGO FOR DEVELOPMENT
-#===============================================================
-
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
-#==============================================================
-
-
-#  2.  THIS IS THE POSTGRES DATABASE THAT IS USED TO REPLACE THE SQLITE DATABASE FOR PRODUCTION
-#===============================================================
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'alumni_db',
-        'USER': 'postgres',
-        'PASSWORD': 'Theeagle@1953',
-        'PORT': '5432',
-        'HOST': 'localhost',
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
-
-#==============================================================
-
 
 
 # Password validation
@@ -145,6 +125,8 @@ USE_TZ = True
 STATIC_ROOT = BASE_DIR / 'productionfiles'
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/assets/'
+MEDIA_ROOT = BASE_DIR / "assets"
 
 STATICFILES_DIRS = [
     BASE_DIR / 'mystaticfiles'
@@ -154,3 +136,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS", "http://*").split(",")
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
