@@ -2,7 +2,7 @@
 {% extends "master.html" %}
 
 {% block title %}
-  KETA SENIOR HIGH TECHNICAL SCHOOL 
+  KANA
 {% endblock %}
 
 
@@ -13,8 +13,8 @@
   <h1>ALMNI ICT CENTER</h1>
   
 <ul>
-  {% for x in playoff_stars %}
-    <li> <a href="details/{{ x.id }}"> {{ x.Brand_Name }} {{ x.Item_Name }}</a> </li>
+  {% for x in leasings %}
+    <li> <a href="leased_details/{{ x.id }}"> {{ x.Brand_Name }} {{ x.Item_Name }}</a> </li>
   {% endfor %}
 </ul>
 </div>

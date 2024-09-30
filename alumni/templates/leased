@@ -1,4 +1,3 @@
-
 {% extends "master.html" %}
 
 {% block title %}
@@ -10,11 +9,11 @@
 
 <div class="mycard">
 
-  <h1>ALMNI ICT CENTER</h1>
+  <h1> LEASED ITEMS</h1>
   
 <ul>
-  {% for x in playoff_stars %}
-    <li> <a href="details/{{ x.id }}"> {{ x.Brand_Name }} {{ x.Item_Name }}</a> </li>
+  {% for x in leasings  %}
+    <li> <a href="leased/{{ x.id }}"> {{ x.Brand_Name }} {{ x.Item_Name }}</a> </li>
   {% endfor %}
 </ul>
 </div>
